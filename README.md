@@ -1,2 +1,3 @@
 # SimGPU
-A Simple GPU check code snippet
+
+## Simple python scripts to check if Pytorch and GPU are synchronized and ready to go. 

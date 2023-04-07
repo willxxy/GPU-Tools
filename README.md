@@ -1,5 +1,9 @@
-# SimGPU
+# GPU Tools
 
-Simple python scripts to check if Pytorch and GPU are synchronized and ready to go. 
+Simple tools for synchronizing PyTorch and GPU usage on respective OS.
 
-[TODO] - Write script for distributed training [x] 
+## Tools Available
+
+1. Simple checks whether CUDA is available.
+2. Simple checks for correctly allocating or creating tensor to and from GPU.
+3. Simple checks for distributed training across multiple GPUs.

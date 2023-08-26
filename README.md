@@ -1,6 +1,6 @@
 # GPU Tools
 
-Simple tools for synchronizing PyTorch and GPU usage on respective OS.
+Simple python tools for synchronizing PyTorch and GPU usage on respective OS.
 
 ## Tools Available
 

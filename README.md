@@ -2,7 +2,7 @@
 
 Simple python tools for synchronizing PyTorch and GPU usage on respective OS.
 
-Note: Mostly tested on torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113.
+Note: Mostly tested on torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1.
 
 ## Tools Available
 

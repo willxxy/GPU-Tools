@@ -10,3 +10,4 @@ Note: Mostly tested on torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio=
 2. Identification of which GPU(s) are available and in use.
 3. Simple checks for correctly allocating or creating tensor to and from GPU.
 4. Simple checks for distributed training across multiple GPUs.
+5. Example of Distributed Data Parallel training with MNIST

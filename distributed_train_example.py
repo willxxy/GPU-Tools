@@ -53,6 +53,38 @@ def get_data_loaders(batch_size, rank, world_size):
 
     return train_loader, test_loader
 
+
+def train(rank, world_size, model, train_loader, optimizer, epoch):
+    model.train()
+    train_loader.sampler.set_epoch(epoch)
+    for batch_idx, (data, target) in enumerate(train_loader):
+        data, target = data.to(rank), target.to(rank)
+        optimizer.zero_grad()
+        output = model(data)
+        loss = nn.CrossEntropyLoss()(output, target)
+        loss.backward()
+        optimizer.step()
+        if batch_idx % 100 == 0:
+            print(f'Rank {rank}, Train Epoch: {epoch} [{batch_idx * len(data)}/{len(train_loader.dataset)}'
+                  f' ({100. * batch_idx / len(train_loader):.0f}%)]\tLoss: {loss.item():.6f}')
+
+def test(rank, model, test_loader):
+    model.eval()
+    test_loss = 0
+    correct = 0
+    with torch.no_grad():
+        for data, target in test_loader:
+            data, target = data.to(rank), target.to(rank)
+            output = model(data)
+            test_loss += nn.CrossEntropyLoss()(output, target).item()
+            pred = output.argmax(dim=1, keepdim=True)
+            correct += pred.eq(target.view_as(pred)).sum().item()
+
+    test_loss /= len(test_loader.dataset)
+    print(f'\nRank {rank}, Test set: Average loss: {test_loss:.4f}, Accuracy: {correct}/{len(test_loader.dataset)}'
+          f' ({100. * correct / len(test_loader.dataset):.0f}%)\n')
+
+
 def main(rank, world_size):
     setup(rank, world_size)
     

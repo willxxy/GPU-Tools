@@ -1,34 +1,54 @@
 import torch
+import sys
 
-# Print Pytorch and Cuda version
+def check_pytorch_installation():
+    print("PyTorch Installation Check")
+    print("==========================")
 
-print(torch.version.cuda)
-print(torch.__version__)
+    # Check PyTorch version
+    print(f"PyTorch version: {torch.__version__}")
 
-#If CUDA is available, prints True. Else, False.
-print(torch.cuda.is_available())
+    # Check CUDA availability
+    cuda_available = torch.cuda.is_available()
+    print(f"CUDA available: {cuda_available}")
 
-# If CUDA is availalbe, prints integer of CUDA devices that are available.
-print(torch.cuda.device_count())
+    if cuda_available:
+        print("\nCUDA Information:")
+        print("-----------------")
+        print(f"CUDA version: {torch.version.cuda}")
+        print(f"Number of CUDA devices: {torch.cuda.device_count()}")
+        
+        current_device = torch.cuda.current_device()
+        print(f"Current CUDA device ID: {current_device}")
+        
+        device = torch.device(f'cuda:{current_device}')
+        print(f"Current CUDA device: {device}")
+        
+        device_name = torch.cuda.get_device_name(current_device)
+        print(f"CUDA device name: {device_name}")
 
-# If CUDA is available, prints the ID of the current device that is ready for usage.
-print(torch.cuda.current_device())
-ID = torch.cuda.current_device()
+        print("\nTensor Operations:")
+        print("------------------")
+        try:
+            x = torch.tensor(1).to(device)
+            print(f"Moved tensor: {x}")
 
-# If CUDA is available, instantiate device you will be using.
-device = torch.device(f'cuda:{ID}')
-print(device)
+            y = torch.tensor(1, device=device)
+            print(f"Created tensor: {y}")
 
-# If CUDA is available, get the name of the device.
-print(torch.cuda.get_device_name(ID))
+            if x.device.type == 'cuda' and y.device.type == 'cuda':
+                print("\nSuccess: PyTorch is correctly installed with CUDA support!")
+            else:
+                print("\nWarning: Tensors were not properly moved to CUDA devices.")
+        except Exception as e:
+            print(f"\nError during tensor operations: {e}")
+    else:
+        print("\nNote: CUDA is not available. PyTorch will run on CPU only.")
 
-# If CUDA is available, move or create tensor using device
-# Move
-x = torch.tensor(1).to(device)
-print(x)
+    print("\nSystem Information:")
+    print("-------------------")
+    print(f"Python version: {sys.version}")
+    print(f"Operating System: {sys.platform}")
 
-# Create
-y = torch.tensor(1, device = device)
-print(y)
-
-# If x or y printed "tensor(1, device='cuda:0')" you should be good to go!
+if __name__ == "__main__":
+    check_pytorch_installation()

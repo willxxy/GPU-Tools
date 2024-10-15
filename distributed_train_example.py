@@ -11,7 +11,8 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 def setup(rank, world_size):
     os.environ['MASTER_ADDR'] = 'localhost'
     os.environ['MASTER_PORT'] = '12355'
-    dist.init_process_group("gloo", rank=rank, world_size=world_size)
+    connections = ['nccl', 'gloo'] # nccl better for nv link
+    dist.init_process_group(connections[0], rank=rank, world_size=world_size)
 
 def cleanup():
     dist.destroy_process_group()
